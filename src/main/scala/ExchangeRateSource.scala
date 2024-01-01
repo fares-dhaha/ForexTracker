@@ -10,11 +10,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class StockPriceSource(symbol: String) extends SourceFunction[Record] {
+class ExchangeRateSource extends SourceFunction[Record] {
   override def run(ctx: SourceFunction.SourceContext[Record]): Unit = {
     val apiKey = "335de10327msh2ef80e3607501c3p111d77jsn0a1ac38081a0"
-    //val function = "GLOBAL_QUOTE"
-    //val url = s"https://alpha-vantage.p.rapidapi.com/query?function=$function&symbol=$symbol"
     val fromCurrency = "USD"
     val toCurrency = "JPY"
     val function = "CURRENCY_EXCHANGE_RATE"
@@ -39,7 +37,6 @@ class StockPriceSource(symbol: String) extends SourceFunction[Record] {
 
           implicit val formats: DefaultFormats.type = DefaultFormats
           val json = parse(response.toString)
-          println(json)
           val price = (json \\ "5. Exchange Rate").extract[String].toDouble
           val bid = (json \\ "8. Bid Price").extract[String].toDouble
           val ask = (json \\ "9. Ask Price").extract[String].toDouble
@@ -51,6 +48,7 @@ class StockPriceSource(symbol: String) extends SourceFunction[Record] {
 
           // Format the current date and time using the formatter
           val formattedDateTime: String = currentDateTime.format(formatter)
+          println(s"$formattedDateTime: USD/JPY Exchange Rate: $price (Ask Price: $ask / Bid Price: $bid)")
           val record = Record(price, ask, bid, formattedDateTime)
 
           ctx.collect(record)
