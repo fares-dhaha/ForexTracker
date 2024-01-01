@@ -21,7 +21,7 @@ Ensure you have the following installed:
 - Scala (2.12.x)
 - Intellij
 - Required Python packages (matplotlib, pandas, etc.)
-- Alpha Vantage API key (get it from [Alpha Vantage](https://www.alphavantage.co/))
+- Alpha Vantage API key (get it from [Alpha Vantage](https://rapidapi.com/alphavantage/api/alpha-vantage))
 
 ## Setup
 
